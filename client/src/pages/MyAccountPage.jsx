@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom";
 import { Input, Label, Button, Title } from "../components/ui/index.js";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../src/context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import { useEffect, useState } from "react";
 
 function MyAccountPage() {
-  const { logout, user } = useAuth();
+  const { logout, user, getUser } = useAuth();
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   console.log(user);
-  console.log(user.id);
+
   return (
     <>
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 ">
@@ -15,7 +21,7 @@ function MyAccountPage() {
 
           <div className="m-2 ">
             <Link
-              to = {`../update/${user.id}`}
+              to = {`../update/` + user.id}
               className="flex w-full justify-center rounded-sm bg-amber-300 tracking-wider px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900  shadow-md hover:bg-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
             >
               Profile

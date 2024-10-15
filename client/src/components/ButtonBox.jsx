@@ -17,7 +17,7 @@ export function ButtonBox() {
     <div className="flex flex-col md:flex-row items-center justify-between">
       {imagesSrc.map((s, index) => {
         return (
-          <div className="p-2 object-cover">
+          <div key={index} className="p-2 object-cover">
             <ImgButton key={index} src={s[0]} title={s[1]} />
           </div>
         );

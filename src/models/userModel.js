@@ -44,8 +44,13 @@ userSchema.pre("save", function(next) {
     next();
 });
 
-userSchema.pre("update", function(next) {
-    this.password = bcrypt.hashSync(this.password, 10);
+userSchema.pre("findOneAndUpdate", async function(next) {
+    const update = this.getUpdate();
+    
+    if (update.password) {
+        // Encripta la nueva contraseña si es que está siendo actualizada
+        update.password = await bcrypt.hash(update.password, 10);
+    }
     next();
 });
 

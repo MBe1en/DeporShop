@@ -20,7 +20,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isAuthenticated, setisAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authErrors, setAuthErrors] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,10 +30,10 @@ export const AuthProvider = ({ children }) => {
       console.log("Respuesta:", res.data);
       if (res.status === 200) {
         setUser(res.data);
-        setisAuthenticated(true);
+        setIsAuthenticated(true);
       }
     } catch (error) {
-      setisAuthenticated(false);
+      // setIsAuthenticated(false);
       console.log("Error: " + error.response.data.message);
       setAuthErrors(error.response.data.message);
     }
@@ -43,12 +43,13 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await loginRequest(user);
       console.log("Respuesta:", res.data);
+      console.log(user);
       if (res.status === 200) {
         setUser(res.data);
-        setisAuthenticated(true);
+        setIsAuthenticated(true);
       }
     } catch (error) {
-      setisAuthenticated(false);
+      // setIsAuthenticated(false);
       console.log("Error: " + error.response.data.message);
       setAuthErrors(error.response.data.message);
     }
@@ -63,6 +64,8 @@ export const AuthProvider = ({ children }) => {
   const getUser = async (id) => {
     try {
       const res = await getUserRequest(id);
+      console.log(res.data);
+      setUser(res.data);
       return res.data;
     } catch (error) {
       console.error(error);
@@ -71,10 +74,8 @@ export const AuthProvider = ({ children }) => {
 
   const updateUser = async (user) => {
     try {
-      // console.log(user);
-
       const res = await updateUserRequest(user);
-      console.log("res");
+      console.log("res updateUserRequest:");
       console.log(res);
     } catch (error) {
       console.error(error);
@@ -86,39 +87,41 @@ export const AuthProvider = ({ children }) => {
       const timer = setTimeout(() => {
         console.log("2" + authErrors);
         setAuthErrors([]);
-      }, 50000);
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [authErrors]);
 
   useEffect(() => {
-    async function checkLogin() {
+    // async function checkLogin() {
+      const checkLogin = async() => {
       const cookies = Cookies.get();
       console.log("cookie checkLogin");
       console.log(cookies);
       if (!cookies.token) {
-        setisAuthenticated(false);
+        setIsAuthenticated(false);
         setLoading(false);
         return;
       }
       try {
         const res = await verifyTokenRequest(cookies.token);
-        console.log("res");
+        console.log("-- res verifyTokenRequest:");
         console.log(res);
-        if (!res.data) return setisAuthenticated(false);
-        setisAuthenticated(true);
+        if (!res.data) return setIsAuthenticated(false);
+        setIsAuthenticated(true);
+        console.log("isAuthenticated: " + isAuthenticated);
         setUser(res.data);
-        setUserId(res.data._id);
+        console.log(res.data);
+        // setUserId(res.data._id);
         setLoading(false);
-        console.log("userId");
-        console.log(userId);
       } catch (error) {
-        setisAuthenticated(false);
+        setIsAuthenticated(false);
         setLoading(false);
       }
-    }
+    };
 
     checkLogin();
+
   }, []);
 
   return (

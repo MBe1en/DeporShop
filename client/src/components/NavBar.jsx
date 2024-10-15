@@ -5,14 +5,13 @@ import { FaUserCheck, FaUserPlus, FaUserCircle } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 
 function NavBar() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, getUser } = useAuth();
   const [navbarOpen, setNavbarOpen] = useState(false);
-  const [userName, setUserName] = useState("");
+  // const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    if (user) {
-      setUserName(user.name);
-    }
+      getUser();
+      console.log(user);
   }, []);
 
   return (
@@ -35,7 +34,7 @@ function NavBar() {
                   to="./myAccount"
                   className="hidden md:block nav-item text-md px-4 py-1.5 text-amber-300 lg:text-3xl lg:py-1 lg:px-3 lg:m-1 lg:transition-colors lg:duration-300 lg:shadow-inner"
                 >
-                  Welcome {userName}
+                  Welcome {user.name}
                 </Link>
                 <Link
                   to="./myAccount"

@@ -8,7 +8,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { registerSchema } from "../../schemas/userSchema.js";
 
 function RegisterPage() {
-  const { signup, isAuthenticated, authErrors, getUser, updateUser } =
+  const { signup, isAuthenticated, authErrors, getUser } =
     useAuth();
   const { id } = useParams();
   console.log(id);
@@ -44,24 +44,22 @@ function RegisterPage() {
   }, [isAuthenticated]);
 
   const onSubmit = handleSubmit(async (values) => {
-    if (id) {
-      await updateUser(values);
-      console.log("updateuser");
-    } else {
-      console.log("signup");
-      await signup(values);
-    }
+    console.log("signup");
+    await signup(values);
   });
 
   /// Show Password button
-  const [shown, setShown] = useState(false);
-  const switchShown = () => setShown(!shown);
+  const [shownP, setShownP] = useState(false);
+  const switchShownP = () => setShownP(!shownP);
+  const [shownCP, setShownCP] = useState(false);
+  const switchShownCP = () => setShownCP(!shownCP);
+
 
   return (
     <>
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 ">
         <div className="border rounded-md shadow-sm shadow-indigo-800 bg-white p-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <Title>{!id ? "Create an account" : "Edit account"} </Title>
+          <Title>Create an account</Title>
           {/* {authErrors.map((error, i) => (
             <span className="text-xs text-orange-500">
               {error} key={i}
@@ -127,15 +125,15 @@ function RegisterPage() {
                 <div className="text-xs">
                   <a
                     className="font-semibold hover:cursor-pointer"
-                    onClick={switchShown}
+                    onClick={switchShownP}
                   >
-                    {shown ? <FaEyeSlash /> : <FaEye />}
+                    {shownP ? <FaEyeSlash /> : <FaEye />}
                   </a>
                 </div>
               </div>
               <div className="mt-1">
                 <Input
-                  type={shown ? "text" : "password"}
+                  type={shownP ? "text" : "password"}
                   placeholder="*********"
                   {...register("password")}
                 />
@@ -146,7 +144,32 @@ function RegisterPage() {
                 </span>
               )}
             </div>
-
+            <div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <div className="text-xs">
+                  <a
+                    className="font-semibold hover:cursor-pointer"
+                    onClick={switchShownCP}
+                  >
+                    {shownCP ? <FaEyeSlash /> : <FaEye />}
+                  </a>
+                </div>
+              </div>
+              <div className="mt-1">
+                <Input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="*********"
+                  {...register("confirmPassword")}
+                />
+              </div>
+              {errors.confirmPassword?.message && (
+                <p className="text-xs text-orange-500">
+                  {errors.confirmPassword?.message}
+                </p>
+              )}
+            </div>
             <div>
               <Label htmlFor="address">Address</Label>
               <div className="mt-1">

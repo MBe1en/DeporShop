@@ -33,7 +33,7 @@ export default function AppRouter() {
 
             <Route element={<ProtectedRoute />}>
               <Route path="/myAccount" element={<MyAccountPage />} />
-              <Route path="/update/:id" element={<RegisterPage />} />
+              <Route path="/update/:id" element={<ProfilePage />} />
               <Route path="/orders" element={<OrdersPage />} />
               <Route path="/cart" element={<CartPage />} />
             </Route>
