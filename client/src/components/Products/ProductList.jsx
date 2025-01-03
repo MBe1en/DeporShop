@@ -13,7 +13,7 @@ function ProductList() {
   return (
     <>
       <div className="flex justify-center">
-        <div className="grid w-full gap-3 m-2 mt-2 p-6 sm:grid-cols-2 md:grid-cols-4 text-transparent ">
+        <div className="grid w-full gap-3 m-2 ml-6 md:ml-2 mt-2 p-6 sm:grid-cols-2 md:grid-cols-4 text-transparent ">
           {filteredProducts.map((product) => (
             <ProductCard product={product} key={product._id}></ProductCard>
           ))}
