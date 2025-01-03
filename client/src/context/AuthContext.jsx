@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }) => {
   const signup = async (user) => {
     try {
       const res = await registerRequest(user);
-      console.log("Respuesta:", res.data);
       if (res.status === 200) {
         setUser(res.data);
         setIsAuthenticated(true);
@@ -42,7 +41,6 @@ export const AuthProvider = ({ children }) => {
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
-      console.log("Respuesta:", res.data);
       console.log(user);
       if (res.status === 200) {
         setUser(res.data);
@@ -64,7 +62,6 @@ export const AuthProvider = ({ children }) => {
   const getUser = async (id) => {
     try {
       const res = await getUserRequest(id);
-      console.log(res.data);
       setUser(res.data);
       return res.data;
     } catch (error) {
@@ -75,8 +72,6 @@ export const AuthProvider = ({ children }) => {
   const updateUser = async (user) => {
     try {
       const res = await updateUserRequest(user);
-      console.log("res updateUserRequest:");
-      console.log(res);
     } catch (error) {
       console.error(error);
     }
@@ -96,8 +91,6 @@ export const AuthProvider = ({ children }) => {
     // async function checkLogin() {
       const checkLogin = async() => {
       const cookies = Cookies.get();
-      console.log("cookie checkLogin");
-      console.log(cookies);
       if (!cookies.token) {
         setIsAuthenticated(false);
         setLoading(false);
@@ -105,11 +98,8 @@ export const AuthProvider = ({ children }) => {
       }
       try {
         const res = await verifyTokenRequest(cookies.token);
-        console.log("-- res verifyTokenRequest:");
-        console.log(res);
         if (!res.data) return setIsAuthenticated(false);
         setIsAuthenticated(true);
-        console.log("isAuthenticated: " + isAuthenticated);
         setUser(res.data);
         console.log(res.data);
         // setUserId(res.data._id);

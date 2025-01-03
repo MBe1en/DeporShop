@@ -45,6 +45,7 @@ export const findProduct = async (req, res) => {
   }
 };
 
+
 export const getProduct = async (req, res) => {
   try {
     const id = req.params.id;

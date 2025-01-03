@@ -4,7 +4,7 @@ export const registerRequest = (user) => axios.post(`user/register`, user);
 export const loginRequest = (user) => axios.post(`user/login`, user);
 export const verifyTokenRequest = async () => axios.get(`user/verify`);
 export const getUserRequest = async (id) => axios.get(`user/update/${id}`);
-export const updateUserRequest = async (user) => axios.put(`user/update/${user.id}`, user);
+export const updateUserRequest = async (user) => axios.put(`user/update/${user.id}`, user, {withCredentials: true});
 
 // const API = "http://localhost:4000/api/user";
 

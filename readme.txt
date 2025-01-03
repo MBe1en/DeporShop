@@ -16,7 +16,10 @@ Backend
 - JWT y cookies para la gestión de la sesión de usuario
 - Cors
 
+Clone the repository and install the following dependencies:
 
-Dependecias
+- npm install --save-dev nodemon
+- npm install vite
 - npm install -D tailwindcss
+
 

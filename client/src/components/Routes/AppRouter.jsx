@@ -25,11 +25,13 @@ export default function AppRouter() {
         <Routes>
           <Route path="/" element={<NavBar />}>
             <Route index element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+            
             <Route path="/product" element={<ProductsPage />} />
             <Route path="/product/detail" element={<ProductDetail />} />
+
             <Route path="/product/create" element={<ProductForm />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
 
             <Route element={<ProtectedRoute />}>
               <Route path="/myAccount" element={<MyAccountPage />} />
