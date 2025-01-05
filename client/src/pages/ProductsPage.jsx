@@ -29,7 +29,7 @@ function ProductsPage() {
       <div className="lg:grid lg:grid-cols-[1fr_4fr] gap-4 lg:ml-6 transition-all duration-300">
         {/* Sidebar para pantallas grandes */}
         <div
-          className={` hidden lg:block h-full bg-black bg-opacity-90 z-40 p-2 transition-all duration-300 rounded-r-lg`}
+          className={` hidden lg:block h-full p-2 transition-all duration-300 rounded-r-lg`}
         >
           <ProductFiltersSidebar />
         </div>

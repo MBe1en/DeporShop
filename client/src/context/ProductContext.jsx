@@ -24,8 +24,8 @@ export function ProductProvider({ children }) {
   const [filters, setFilters] = useState({
     categories: [],
     priceMin: 0,
-    priceMax: 999999,
-    gender: "",
+    priceMax: 9999999,
+    genders: [],
   });
 
   const createProduct = async (product) => {
@@ -61,23 +61,31 @@ export function ProductProvider({ children }) {
             .map(category => category.toLowerCase()) // Convierte todas las categorías a minúsculas
             .includes(product.category.name.toLowerCase()) // Compara en minúsculas
         );
-        console.log("filtered");
+        console.log("filtered category");
         console.log(filtered);
       }
 
-      // // Filter by price range
-      // filtered = filtered.filter(
-      //   (product) =>
-      //     product.price >= filters.priceMin && product.price <= filters.priceMax
-      // );
+      // Filter by price range
+      filtered = filtered.filter(
+        (product) =>
+          product.price >= filters.priceMin && product.price <= filters.priceMax
+      );
+      console.log("filtered price");
+      console.log(filters.priceMin);
+      console.log(filters.priceMax);
+      console.log(filtered);
 
-      // // Filter by gender
-      // if (filters.gender) {
-      //   filtered = filtered.filter((product) =>
-      //     // console.log(product.gender)
-      //     product.gender.toLowerCase().includes(filters.gender.toLowerCase())
-      //   );
-      // }
+      // Filter by gender
+      console.log(filters.genders)
+      if (filters.genders.length > 0) {
+        filtered = products.filter(product =>
+          filters.genders
+            .map(gender => gender.toLowerCase())
+            .includes(product.gender.toLowerCase())
+        )
+        console.log("filtered gender");
+        console.log(filtered);
+      }
 
       setFilteredProducts(filtered); // Update the filtered products list
     };

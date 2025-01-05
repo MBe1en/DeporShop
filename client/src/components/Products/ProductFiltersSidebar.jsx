@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useProducts } from "../../context/ProductContext";
-
+import "../../../src/index.css";
 
 const ProductFiltersSidebar = () => {
   const { setFilters } = useProducts();
@@ -24,14 +24,24 @@ const ProductFiltersSidebar = () => {
 
   // Price
   const [priceMin, setPriceMin] = useState(0);
-  const [priceMax, setPriceMax] = useState(10000);
-
-  // Gender
-  const [gender, setGender] = useState("");
+  const [priceMax, setPriceMax] = useState(1000000);
 
   const handlePriceMinChange = (e) => setPriceMin(e.target.value);
   const handlePriceMaxChange = (e) => setPriceMax(e.target.value);
-  const handleGenderChange = (e) => setGender(e.target.value);
+
+  // Gender
+  const genders = ["Hombre", "Mujer", "Unisex"];
+  const [selectedGenders, setSelectedGenders] = useState([]);
+
+  const handleGendersChange = (gender) => {
+    setSelectedGenders((prev) =>
+      prev.includes(gender)
+        ? prev.filter((c) => c !== gender)
+        : [...prev, gender]
+    );
+  };
+
+  // const handleGenderChange = (e) => setGender(e.target.value);
 
   //---- Handle submit ----//
 
@@ -40,86 +50,129 @@ const ProductFiltersSidebar = () => {
 
     // Update filters in the context
     setFilters({
-      //   category,
       categories: selectedCategories,
-      priceMin: parseFloat(priceMin),
-      priceMax: parseFloat(priceMax),
-      gender,
+      priceMin: priceMin,
+      priceMax: priceMax,
+      genders: selectedGenders,
     });
   };
 
   return (
-    <div className="w-full bg-black rounded-2xl shadow-2xl shadow-slate-800 text-slate-100 mt-10 p-3 md:p-6">
-
-        {/* Filter by Category */}
-        <div className="p-2 md:p-3 md:pt-4 pb-2 mb-4 border border-slate-400 rounded-md">
-          <label for="category" className="text-sm md:text-md dark:text-gray-300">
-            CATEGORY
-          </label>
-          {categories.map((category) => (
-            <div key={category} className="mt-2 mb-2 text-sm">
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  value={category}
-                  checked={selectedCategories.includes(category)}
-                  onChange={() => handleCategoriesChange(category)}
-                  className="form-checkbox md:h-4 md:w-5 md:ml-2 accent-amber-400 checked hover:cursor-pointer"
-                />
-                <span className="ml-2">{category}</span>
-              </label>
-            </div>
-          ))}
-        </div>
-
-        {/* Filter by Price Range */}
-        <div className="mb-6">
-          <label htmlFor="priceMin" className="block mb-2">
-            Price Range
-          </label>
-          <div className="flex space-x-4">
-            <input
-              type="number"
-              id="priceMin"
-              value={priceMin}
-              onChange={handlePriceMinChange}
-              placeholder="Min Price"
-              className="w-1/2 bg-black text-amber-300 border border-yellow-500 p-2"
-            />
-            <input
-              type="number"
-              id="priceMax"
-              value={priceMax}
-              onChange={handlePriceMaxChange}
-              placeholder="Max Price"
-              className="w-1/2 bg-black text-amber-300 border border-yellow-500 p-2"
-            />
-          </div>
-        </div>
-
-        {/* Filter by Gender */}
-        <div className="mt-3 mb-6">
-          <select
-            id="gender"
-            value={gender}
-            onChange={handleGenderChange}
-            className="w-full bg-black text-amber-300 border border-yellow-500 p-2"
-          >
-            <option value="">Gender</option>
-            <option value="Hombre">Hombre</option>
-            <option value="Mujer">Mujer</option>
-          </select>
-        </div>
-
-        {/* Apply Filters Button */}
-        <button
-          onClick={handleSubmit}
-          className="w-full bg-yellow-500 text-black p-2 hover:bg-yellow-400 transition duration-200"
+    <div className="w-full bg-black rounded-2xl shadow-2xl shadow-slate-800 text-slate-100 mt-14 p-3 md:p-6">
+      <div className="p-2 md:p-3 md:pt-4 pb-2 mb-4 border border-slate-400 rounded-md">
+        <label
+          for="orderby"
+          className="text-md md:text-lg tracking-[.25em]  dark:text-gray-300"
         >
-          Apply Filters
-        </button>
+          ORDER BY
+        </label>
+        <select className="w-full m-2 p-3 bg-black text-slate-100 border-slate-400">
+          <option value="PrecioASC">Precio ASC</option>
+          <option value="PrecioDESC">Precio DESC</option>
+        </select>
       </div>
 
+      {/* Filter by Category */}
+
+      <div className="p-2 md:p-3 md:pt-4 pb-2 mb-4 border border-slate-400 rounded-md">
+        <label
+          for="category"
+          className="text-md md:text-lg tracking-[.25em]  dark:text-gray-300"
+        >
+          CATEGORY
+        </label>
+        {categories.map((category) => (
+          <div
+            key={category}
+            className="mt-2 mb-2 text-sm md:text-md lg:text-lg tracking-wider"
+          >
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                value={category}
+                checked={selectedCategories.includes(category)}
+                onChange={() => handleCategoriesChange(category)}
+                className="form-checkbox md:h-4 md:w-5 md:ml-2 accent-amber-400 checked hover:cursor-pointer"
+              />
+              <span className="ml-2">{category}</span>
+            </label>
+          </div>
+        ))}
+      </div>
+
+      {/* Filter by Price Range */}
+      <div className="p-2 md:p-3 md:pt-4 pb-2 mb-4 border border-slate-400 rounded-md">
+        <label
+          for="priceRange"
+          className="text-md md:text-lg tracking-[.25em] dark:text-gray-300"
+        >
+          PRICE RANGE
+        </label>
+        <div className="flex space-x-4">
+          {/* Price Min and Max Inputs */}
+          <div className="w-full flex flex-col md:flex-row items-center my-3">
+            <div className="w-full space-x-2 mx-2 my-1 md:my-0">
+              <span className="text-lg">$</span>
+              <input
+                type="number"
+                value={priceMin}
+                onChange={handlePriceMinChange}
+                className="bg-black border border-slate-400 rounded-md p-2 w-10/12"
+                min="0"
+                max={priceMax}
+                step="1000"
+              />
+            </div>
+            <div className="w-full space-x-2 mx-2 my-1 md:my-0">
+              <span className="text-lg">$</span>
+              <input
+                type="number"
+                value={priceMax}
+                onChange={handlePriceMaxChange}
+                className="bg-black border border-slate-400 rounded-md p-2 w-10/12"
+                min={priceMin}
+                max="1000000"
+                step="1000"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Filter by Gender */}
+      <div className="p-2 md:p-3 md:pt-4 pb-2 mb-4 border border-slate-400 rounded-md">
+        <label
+          for="gender"
+          className="text-md md:text-lg tracking-[.25em]  dark:text-gray-300"
+        >
+          GENDER
+        </label>
+        {genders.map((gender) => (
+          <div
+            key={gender}
+            className="mt-2 mb-2 text-sm md:text-md lg:text-lg tracking-wider"
+          >
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                value={gender}
+                checked={selectedGenders.includes(gender)}
+                onChange={() => handleGendersChange(gender)}
+                className="form-checkbox md:h-4 md:w-5 md:ml-2 accent-amber-400 checked hover:cursor-pointer"
+              />
+              <span className="ml-2">{gender}</span>
+            </label>
+          </div>
+        ))}
+      </div>
+      {/* Apply Filters Button */}
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-yellow-500 text-black p-2 hover:bg-yellow-400 transition duration-200"
+      >
+        Apply Filters
+      </button>
+    </div>
   );
 };
 
