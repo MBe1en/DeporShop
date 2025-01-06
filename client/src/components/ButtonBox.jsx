@@ -1,4 +1,4 @@
-import { ImgButton } from "./ui/ImgButton";
+import  {ImgButton}  from "./ui/ImgButton";
 
 export function ButtonBox() {
   // let imagesSrc = [

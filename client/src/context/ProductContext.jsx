@@ -22,6 +22,7 @@ export function ProductProvider({ children }) {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [filters, setFilters] = useState({
+    orderBy: "",
     categories: [],
     priceMin: 0,
     priceMax: 9999999,
@@ -52,14 +53,30 @@ export function ProductProvider({ children }) {
     const applyFilters = () => {
       let filtered = products;
 
+      // Order by
+      console.log("orderBy");
+      console.log(filtered);
+      console.log(filters.orderBy);
+      // numbersArr.sort((a, b) => a - b);
+      if (filters.orderBy === "priceASC") {
+        filtered.sort((a, b) => a.price - b.price);
+      }
+      if (filters.orderBy === "priceDESC") {
+        filtered.sort((a, b) => b.price - a.price);
+      }
+      if (filters.orderBy === "name") {
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+      }
+
       // Filter by category
-      console.log(filters.categories)
+      console.log(filters.categories);
       if (filters.categories.length > 0) {
-        filtered = products.filter(product =>
-          product.category?.name && 
-          filters.categories
-            .map(category => category.toLowerCase()) // Convierte todas las categorías a minúsculas
-            .includes(product.category.name.toLowerCase()) // Compara en minúsculas
+        filtered = products.filter(
+          (product) =>
+            product.category?.name &&
+            filters.categories
+              .map((category) => category.toLowerCase()) // Convierte todas las categorías a minúsculas
+              .includes(product.category.name.toLowerCase()) // Compara en minúsculas
         );
         console.log("filtered category");
         console.log(filtered);
@@ -76,13 +93,13 @@ export function ProductProvider({ children }) {
       console.log(filtered);
 
       // Filter by gender
-      console.log(filters.genders)
+      console.log(filters.genders);
       if (filters.genders.length > 0) {
-        filtered = products.filter(product =>
+        filtered = products.filter((product) =>
           filters.genders
-            .map(gender => gender.toLowerCase())
+            .map((gender) => gender.toLowerCase())
             .includes(product.gender.toLowerCase())
-        )
+        );
         console.log("filtered gender");
         console.log(filtered);
       }
@@ -92,7 +109,7 @@ export function ProductProvider({ children }) {
 
     applyFilters();
     console.log("filteredProducts");
-    console.log(filteredProducts)
+    console.log(filteredProducts);
   }, [filters, products]);
 
   return (
