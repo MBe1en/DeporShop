@@ -1,57 +1,59 @@
-import React, { useEffect, useState } from "react";
-import { useGetCategories } from "../../hooks/useCategory.jsx";
+import React, { useState } from "react";
+import { useProducts } from "../../context/ProductContext";
 import "../../../src/index.css";
 
-const ProductFiltersSidebar = ({ setQuery }) => {
-  const [orderBy, setOrderBy] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [priceMin, setPriceMin] = useState(0);
-  const [priceMax, setPriceMax] = useState(1000000);
-  const [selectedGenders, setSelectedGenders] = useState([]);
+const ProductFiltersSidebar2 = () => {
+  const { setFilters } = useProducts();
 
-  const { isPending, isError, data, error } = useGetCategories();
-  const categories = Array.isArray(data?.data) ? data.data : [];
+  //---- Handle submit ----//
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  useEffect(() => {
-    let filterQuery = ``; //`orderBy=${orderBy}&`;
+    // Update filters in the context
+    setFilters({
+      orderBy: orderBy,
+      categories: selectedCategories,
+      priceMin: priceMin,
+      priceMax: priceMax,
+      genders: selectedGenders,
+    });
+  };
 
-    if (selectedCategories.length > 0) {
-      filterQuery += `category=${selectedCategories.join(",")}&`;
-    }
-
-    filterQuery += `priceMin=${priceMin}&priceMax=${priceMax}&`;
-
-    if (selectedGenders.length > 0) {
-      filterQuery += `gender=${selectedGenders.join(",")}&`;
-    }
-
-    filterQuery = filterQuery.slice(0, -1);
-    setQuery(filterQuery);
-  }, [orderBy, selectedCategories, priceMin, priceMax, selectedGenders]);
 
   //---- Handle filter changes ----//
 
-  //Order by
-  // const handleOrderByChange = (orderBy) => {
-  //   setOrderBy(orderBy);
-  // };
+  // Order by
+  const [orderBy, setOrderBy] = useState("");
+  const handleOrderByChange = (orderBy) => {
+    setOrderBy(orderBy);
+  };
 
-  // Categories
+  // Category
+  const categories = ["Indumentaria", "Calzado", "Accesorios"];
+
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
   const handleCategoriesChange = (category) => {
     setSelectedCategories((prev) =>
-      prev.includes(category._id)
-        ? prev.filter((c) => c !== category._id)
-        : [...prev, category._id]
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
     );
   };
-  console.log(categories);
+
+  console.log(selectedCategories);
 
   // Price
+  const [priceMin, setPriceMin] = useState(0);
+  const [priceMax, setPriceMax] = useState(1000000);
+
   const handlePriceMinChange = (e) => setPriceMin(e.target.value);
   const handlePriceMaxChange = (e) => setPriceMax(e.target.value);
 
   // Gender
   const genders = ["Hombre", "Mujer", "Unisex"];
+  const [selectedGenders, setSelectedGenders] = useState([]);
+
   const handleGendersChange = (gender) => {
     setSelectedGenders((prev) =>
       prev.includes(gender)
@@ -60,11 +62,13 @@ const ProductFiltersSidebar = ({ setQuery }) => {
     );
   };
 
+  // const handleGenderChange = (e) => setGender(e.target.value);
+
   return (
     <div className="w-full bg-black rounded-2xl shadow-[0px_15px_15px_-5px_rgba(30,41,59,0.9)] shadow-slate-800 text-slate-100 mt-10 p-2 md:p-4 ">
       <div className="p-2 md:px-3 md:py-1 mb-3 border border-slate-400 rounded-md">
         <label
-          htmlFor="orderby"
+          htmlfor="orderby"
           className="text-sm md:text-md tracking-[.25em]  dark:text-gray-300"
         >
           ORDER BY
@@ -73,7 +77,7 @@ const ProductFiltersSidebar = ({ setQuery }) => {
           className="w-11/12 m-2 mb-3 p-2 bg-black text-slate-100 text-sm border border-slate-400  rounded-md"
           name="orderBy"
           defaultValue={"name"}
-          onChange={(e) => handleOrderByChange(e.target.value)}
+          onChange={e => handleOrderByChange(e.target.value)          }
         >
           <option value="priceASC">Precio ASC</option>
           <option value="priceDESC">Precio DESC</option>
@@ -85,25 +89,25 @@ const ProductFiltersSidebar = ({ setQuery }) => {
 
       <div className="p-2 md:px-3 md:py-1 md:pt-2 mb-3 border border-slate-400 rounded-md">
         <label
-          htmlFor="category"
+          htmlfor="category"
           className="text-sm md:text-md tracking-[.25em]  dark:text-gray-300"
         >
           CATEGORY
         </label>
         {categories.map((category) => (
           <div
-            key={category._id}
+            key={category}
             className="mt-2 mb-2 text-sm md:text-md tracking-wider"
           >
             <label className="inline-flex items-center">
               <input
                 type="checkbox"
-                value={category._id}
+                value={category}
                 checked={selectedCategories.includes(category)}
                 onChange={() => handleCategoriesChange(category)}
                 className="form-checkbox md:h-4 md:w-5 md:ml-2 accent-amber-400 checked hover:cursor-pointer"
               />
-              <span className="ml-2">{category.name}</span>
+              <span className="ml-2">{category}</span>
             </label>
           </div>
         ))}
@@ -112,7 +116,7 @@ const ProductFiltersSidebar = ({ setQuery }) => {
       {/* Filter by Price Range */}
       <div className="p-2 md:px-3 md:py-1 mb-3 border border-slate-400 rounded-md">
         <label
-          htmlFor="priceRange"
+          htmlfor="priceRange"
           className="text-sm md:text-md  tracking-[.25em] dark:text-gray-300"
         >
           PRICE RANGE
@@ -151,7 +155,7 @@ const ProductFiltersSidebar = ({ setQuery }) => {
       {/* Filter by Gender */}
       <div className="p-2 md:px-3 md:py-1 mb-3 border border-slate-400 rounded-md">
         <label
-          htmlFor="gender"
+          htmlfor="gender"
           className="text-sm md:text-md tracking-[.25em]  dark:text-gray-300"
         >
           GENDER
@@ -171,8 +175,15 @@ const ProductFiltersSidebar = ({ setQuery }) => {
           </div>
         ))}
       </div>
+      {/* Apply Filters Button */}
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-yellow-500 text-black p-2 hover:bg-yellow-400 transition duration-200 rounded-md"
+      >
+        Apply Filters
+      </button>
     </div>
   );
 };
 
-export default ProductFiltersSidebar;
+export default ProductFiltersSidebar2;

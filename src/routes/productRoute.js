@@ -1,17 +1,19 @@
 import { Router } from "express";
 import {
-  createProduct,
-  deleteProduct,
-  getProduct,
   getProducts,
+  getProduct,
+  getFilteredProducts,
   findProduct,
+  createProduct,
   updateProduct,
+  deleteProduct,
 } from "../controllers/productController.js";
 import { authRequired } from "../middlewares/validateTokenMW.js";
 
 const productRoute = Router();
 
 productRoute.get("/getAll", getProducts);
+productRoute.get("/get", getFilteredProducts);
 productRoute.get("/get/:name", findProduct);
 productRoute.get("/detail", getProduct);
 // productRoute.post("/create", authRequired, create);

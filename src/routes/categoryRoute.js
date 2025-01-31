@@ -1,4 +1,5 @@
-import express from "express";
+// import express from "express";
+import { Router } from "express";
 import {
   create,
   deleteCategory,
@@ -7,7 +8,7 @@ import {
 } from "../controllers/categoryController.js";
 import { authRequired } from "../middlewares/validateTokenMW.js";
 
-const categoryRoute = express.Router();
+const categoryRoute = Router();
 
 categoryRoute.get("/getAll", getAll);
 categoryRoute.post("/create", authRequired, create);

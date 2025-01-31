@@ -45,6 +45,69 @@ export const findProduct = async (req, res) => {
   }
 };
 
+export const getFilteredProducts = async (req, res) => {
+  try {
+    const {
+      category = [],
+      gender = [],
+      priceMin = [],
+      priceMax = [],
+    } = req.query;
+
+    let filters = {};
+
+    if (category.length) {
+      filters.category = { $in: category.split(",") };
+    }
+
+    if (gender.length) {
+      filters.gender = { $in: gender.split(",") };
+    }
+
+    if (priceMin.length) {
+      filters.price = {
+        ...filters.price,
+        $gte: parseFloat(priceMin),
+      };
+    }
+
+    if (priceMax.length) {
+      filters.price = {
+        ...filters.price,
+        $lte: parseFloat(priceMax),
+      };
+    }
+
+    const products = await Product.find(filters).populate("category", "name");
+
+    console.log(products);
+
+    if (products.length == 0) {
+      return res.status(404).json({ message: `There are no products` });
+    }
+
+    return res.status(200).json(products);
+
+    // const products = await Product.find(filters)
+    //   .populate({
+    //     path: "category",
+    //     match: { name: { $in: category.split(",") } }, // Este es el filtro por nombre de la categoría
+    //     select: "name",  // Solo seleccionamos el nombre de la categoría
+    //   });
+
+    // // Filtramos los productos con categorías que coincidan
+    // const filteredProducts = products.filter(product => product.category);
+
+    // if (filteredProducts.length == 0) {
+    //   return res.status(404).json({ message: `There are no products` });
+    // }
+
+    // return res.status(200).json(filteredProducts);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error", error });
+  }
+};
 
 export const getProduct = async (req, res) => {
   try {

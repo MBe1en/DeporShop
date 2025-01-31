@@ -4,7 +4,9 @@ import {
   updateProductRequest,
   deleteProductRequest,
   getProductsRequest,
+  getProductsFilteredRequest,
 } from "../api/products";
+import { getFilteredProducts } from "../../../src/controllers/productController";
 
 const ProductContext = createContext();
 
@@ -29,6 +31,14 @@ export function ProductProvider({ children }) {
     genders: [],
   });
 
+  useEffect(() => {
+    getAllProduct();
+  }, []);
+
+  // useEffect(() => {
+  //   getProductsFilteredRequest();
+  // }, [filters]);
+
   const createProduct = async (product) => {
     console.log(product);
     const res = await createProductRequest(product);
@@ -45,12 +55,17 @@ export function ProductProvider({ children }) {
     setProducts(res.data);
   };
 
-  useEffect(() => {
-    getAllProduct();
-  }, []);
+  const getProductsFilteredRequest = async (query) => {
+    const res = await getProductsFilteredRequest(query);
+    setFilteredProducts(res.data);
+  }
 
+
+
+
+   /* Javascript filters
   useEffect(() => {
-    const applyFilters = () => {
+   const applyFilters = () => {
       let filtered = products;
 
       // Order by
@@ -111,6 +126,7 @@ export function ProductProvider({ children }) {
     console.log("filteredProducts");
     console.log(filteredProducts);
   }, [filters, products]);
+*/
 
   return (
     <ProductContext.Provider
@@ -120,6 +136,7 @@ export function ProductProvider({ children }) {
         getAllProduct,
         getProductsRequest,
         filteredProducts,
+        getProductsFilteredRequest,
         setFilters,
       }}
     >

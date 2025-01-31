@@ -1,16 +1,33 @@
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import { useProducts } from "../../context/ProductContext";
 
-function ProductList() {
-  const { filteredProducts, products } = useProducts();
+import {
+  useGetFilteredProducts,
+  useGetProducts,
+} from "../../hooks/useProduct.jsx";
+
+function ProductList({ query }) {
+
+  const { isPending, isError, data, error } = useGetFilteredProducts(query);
+
+  const products = Array.isArray(data?.data) ? data.data : [];
+
+  console.log("products");
+  console.log(products);
+  
+  if (isPending) return 'Loading...'
+
+  if (isError) return 'An error has occurred: ' + error.message
 
   return (
     <>
       <div className="flex justify-center">
         <div className="grid w-full gap-3 m-2 ml-6 md:ml-2 mt-2 p-6 sm:grid-cols-2 md:grid-cols-4 text-transparent ">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
+          {/* {isLoading && <span>fetching products...</span>}
+          {isError && <span>Ups! it was an error 🚨</span>} */}
+
+          {products.length > 0 ? (
+            products.map((product) => (
               <ProductCard product={product} key={product._id}></ProductCard>
             ))
           ) : (

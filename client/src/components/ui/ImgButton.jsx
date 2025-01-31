@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 export function ImgButton(props) {
+  useEffect(() => {
+    let filterQuery = `category=${props.title}`;
+  }, []);
 
-  function handleOnClick(title) {
+
+  function handleOnClick(filterQuery) {
     console.log("click");
-    console.log(title);
+  //   <Link to="/" className="flex items-center gap-7">
+            
+  //     <img src="/assets/logo5.png" className="w-1/4 h-1/4 p-1"></img> 
+  //     <span className="text-amber-300 text-3xl font-galada-cursive">DeporShop</span>
+    
+  // </Link>
   }
 
   return (
@@ -29,6 +38,6 @@ export function ImgButton(props) {
       </div> */}
     </div>
   );
-};
+}
 
 export default ImgButton;
