@@ -19,10 +19,11 @@ const ProductFiltersSidebar = () => {
 
   useEffect(() => {
     const categoryID = searchParams.get("category") || "";
-    setSelectedCategories([...selectedCategories, categoryID]);
+    if (categoryID) setSelectedCategories([...selectedCategories, categoryID]);
   }, []);
 
   useEffect(() => {
+
     if (selectedCategories.length > 0) {
       filterQuery += `category=${selectedCategories.join(",")}&`;
     }

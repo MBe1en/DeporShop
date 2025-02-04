@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import { useSearchParams } from "react-router-dom"; //-----
-
+import { useSearchParams } from "react-router-dom";
 import { useGetFilteredProducts } from "../../hooks/useProduct.jsx";
+import Spinner from "../ui/Spinner.jsx";
+import ErrorMsg from "../ui/ErrorMsg.jsx"
 
 function ProductList() {
   const [searchParams] = useSearchParams();
@@ -21,9 +21,19 @@ function ProductList() {
   console.log("products");
   console.log(products);
 
-  if (isPending) return "Loading...";
+  if (isPending)
+    return (
+      <div className="flex justify-center">
+        <Spinner />
+      </div>
+    );
 
-  if (isError) return "An error has occurred: " + error.message;
+  if (isError)
+  return (
+    <div className="flex justify-center">
+      <ErrorMsg error={error?.message}/>
+    </div>
+  );
 
   return (
     <>

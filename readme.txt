@@ -1,11 +1,10 @@
 Frontend
 - React
-- Typescript
 - Tailwind CSS para el estilo del sitio
 - React Router DOM para el manejo de rutas
 - React Hook Form para la generación y validación de formularios
 - Axios
-
+- React Query para la gestión de la caché
 
 Backend
 - Mongo DB
@@ -15,6 +14,7 @@ Backend
 - Bcrypt para encriptado de contraseñas
 - JWT y cookies para la gestión de la sesión de usuario
 - Cors
+
 
 Clone the repository and install the following dependencies:
 
