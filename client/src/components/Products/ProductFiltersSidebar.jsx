@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useGetCategories } from "../../hooks/useCategory.jsx";
 import "../../../src/index.css";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-const ProductFiltersSidebar = ({ setQuery }) => {
+const ProductFiltersSidebar = () => {
   const [orderBy, setOrderBy] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceMin, setPriceMin] = useState(0);
@@ -12,9 +13,16 @@ const ProductFiltersSidebar = ({ setQuery }) => {
   const { isPending, isError, data, error } = useGetCategories();
   const categories = Array.isArray(data?.data) ? data.data : [];
 
-  useEffect(() => {
-    let filterQuery = ``; //`orderBy=${orderBy}&`;
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  let filterQuery = ``; //`orderBy=${orderBy}&`;
 
+  useEffect(() => {
+    const categoryID = searchParams.get("category") || "";
+    setSelectedCategories([...selectedCategories, categoryID]);
+  }, []);
+
+  useEffect(() => {
     if (selectedCategories.length > 0) {
       filterQuery += `category=${selectedCategories.join(",")}&`;
     }
@@ -26,7 +34,8 @@ const ProductFiltersSidebar = ({ setQuery }) => {
     }
 
     filterQuery = filterQuery.slice(0, -1);
-    setQuery(filterQuery);
+
+    navigate(`/product?${filterQuery}`);
   }, [orderBy, selectedCategories, priceMin, priceMax, selectedGenders]);
 
   //---- Handle filter changes ----//
@@ -44,7 +53,6 @@ const ProductFiltersSidebar = ({ setQuery }) => {
         : [...prev, category._id]
     );
   };
-  console.log(categories);
 
   // Price
   const handlePriceMinChange = (e) => setPriceMin(e.target.value);
@@ -99,9 +107,9 @@ const ProductFiltersSidebar = ({ setQuery }) => {
               <input
                 type="checkbox"
                 value={category._id}
-                checked={selectedCategories.includes(category)}
+                checked={selectedCategories.includes(category._id)}
                 onChange={() => handleCategoriesChange(category)}
-                className="form-checkbox md:h-4 md:w-5 md:ml-2 accent-amber-400 checked hover:cursor-pointer"
+                className="form-checkbox md:h-4 md:w-5 md:ml-2 accent-amber-400 checked:bg-amber-400 checked:border-amber-400 hover:cursor-pointer"
               />
               <span className="ml-2">{category.name}</span>
             </label>
@@ -164,7 +172,7 @@ const ProductFiltersSidebar = ({ setQuery }) => {
                 value={gender}
                 checked={selectedGenders.includes(gender)}
                 onChange={() => handleGendersChange(gender)}
-                className="form-checkbox md:h-4 md:w-5 md:ml-2 accent-amber-400 checked hover:cursor-pointer"
+                className="form-checkbox md:h-4 md:w-5 md:ml-2 accent-amber-400 checked:bg-amber-400 checked:border-amber-400 hover:cursor-pointer"
               />
               <span className="ml-2">{gender}</span>
             </label>

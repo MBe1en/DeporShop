@@ -8,9 +8,9 @@ export function ButtonBox() {
   //   ];
 
   const imagesSrc = [
-    ["/public/assets/indumentaria.jpg", "INDUMENTARIA"],
-    ["/public/assets/zapatillas.jpg", "CALZADO"],
-    ["/public/assets/accesorios2.jpg", "ACCESORIOS"],
+    ["/public/assets/indumentaria.jpg", "INDUMENTARIA", "6643f9a197f1929a633c52eb"],
+    ["/public/assets/zapatillas.jpg", "CALZADO", "6643fca697f1929a633c52f1"],
+    ["/public/assets/accesorios2.jpg", "ACCESORIOS", "6643fcaf97f1929a633c52f4"],
   ];
 
   return (
@@ -18,7 +18,7 @@ export function ButtonBox() {
       {imagesSrc.map((s, index) => {
         return (
           <div key={index} className="p-2 object-cover">
-            <ImgButton key={index} src={s[0]} title={s[1]} />
+            <ImgButton key={index} src={s[0]} title={s[1]} id={s[2]} />
           </div>
         );
       })}

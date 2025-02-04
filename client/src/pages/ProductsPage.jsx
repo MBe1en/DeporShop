@@ -23,7 +23,7 @@ function ProductsPage() {
           isSidebarOpen ? "block" : "hidden"
         } lg:hidden absolute top-7 left-0 w-3/5 h-full bg-black bg-opacity-90 z-40 p-2 transition-all duration-300 rounded-r-lg`}
       >
-        <ProductFiltersSidebar query={query} setQuery={setQuery} />
+        <ProductFiltersSidebar  />
       </div>
 
       {/* Layout para pantallas grandes */}
@@ -32,12 +32,12 @@ function ProductsPage() {
         <div
           className={"hidden lg:block h-full transition-all duration-300 rounded-r-lg"}
         >
-          <ProductFiltersSidebar query={query} setQuery={setQuery} />
+          <ProductFiltersSidebar/>
         </div>
 
         {/* Product List */}
         <div className="w-full lg:w-full">
-          <ProductList query={query}  />
+          <ProductList  />
         </div>
       </div>
     </div>

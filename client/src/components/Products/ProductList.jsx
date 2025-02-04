@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
+import { useSearchParams } from "react-router-dom"; //-----
 
-import {
-  useGetFilteredProducts,
-  useGetProducts,
-} from "../../hooks/useProduct.jsx";
+import { useGetFilteredProducts } from "../../hooks/useProduct.jsx";
 
-function ProductList({ query }) {
+function ProductList() {
+  const [searchParams] = useSearchParams();
+
+  // Obtener los filtros desde los parámetros de búsqueda en la URL
+  const category = searchParams.get("category") || "";
+  const priceMin = searchParams.get("priceMin") || 0;
+  const priceMax = searchParams.get("priceMax") || 1000000;
+  const gender = searchParams.get("gender") || "";
+  const query = `category=${category}&priceMin=${priceMin}&priceMax=${priceMax}&gender=${gender}`;
 
   const { isPending, isError, data, error } = useGetFilteredProducts(query);
 
@@ -14,10 +20,10 @@ function ProductList({ query }) {
 
   console.log("products");
   console.log(products);
-  
-  if (isPending) return 'Loading...'
 
-  if (isError) return 'An error has occurred: ' + error.message
+  if (isPending) return "Loading...";
+
+  if (isError) return "An error has occurred: " + error.message;
 
   return (
     <>
