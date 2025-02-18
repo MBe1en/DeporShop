@@ -8,7 +8,7 @@ export const getAll = async (req, res) => {
     }
     res.status(200).json(categories);
   } catch (error) {
-    res.status(500).json({ message: "Internal server error cat", error });
+    res.status(500).json({ message: "Internal server error", error });
   }
 };
 

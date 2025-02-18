@@ -1,6 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaUserCheck, FaUserPlus, FaUserCircle } from "react-icons/fa";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 import { useAuth } from "../context/AuthContext";
 
@@ -10,8 +11,8 @@ function NavBar() {
   // const [userName, setUserName] = useState("");
 
   useEffect(() => {
-      getUser();
-      console.log(user);
+    getUser();
+    console.log(user);
   }, []);
 
   return (
@@ -28,6 +29,7 @@ function NavBar() {
             </Link>
           </div>
           <div className="mt-26rounded-xl shadow-lg flex flex-row ml-auto justify-end">
+           
             {isAuthenticated ? (
               <>
                 <Link
@@ -71,6 +73,12 @@ function NavBar() {
                 </Link>
               </>
             )}
+            <Link
+              to="./cart"
+              className="text-3xl p-3 bg-amber-300 text-black transition-colors duration-300 hover:bg-amber-400 rounded-full shadow-inner"
+            >
+              <MdOutlineShoppingCart />
+            </Link>
           </div>
         </div>
       </nav>

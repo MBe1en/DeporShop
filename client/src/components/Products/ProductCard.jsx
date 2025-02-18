@@ -32,7 +32,7 @@ const ProductCard = ({ product }) => {
             {formattedAmount}
           </span>
           <a
-            href="#"
+            href="/cart"
             className="text-gray-900 shadow-inner bg-amber-300 hover:bg-amber-400 rounded-lg text-base px-2.5 py-2 text-center "
           >
             <MdOutlineAddShoppingCart />
